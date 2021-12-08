@@ -1,0 +1,1429 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" data-ng-app="app">
+<head>
+    <title>Customer Status Report</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<!--<link href="status_report.css" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet" type="text/css" media="all" href="https://s3-us-west-2.amazonaws.com/apptiopm.com/project-status-report/status_report.css?versionId=dEQWyoYjGW2kr5xHvC0tmgvs02HxB9Sr">
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.0/jQuery.print.min.js"></script>
+	<script type="text/javascript">
+        google.load("dojo", "1.13");
+    </script>
+</head>
+<body>
+
+<!----------------------------------------------->
+<!---             PRINT BUTTON                --->
+<!----------------------------------------------->
+
+	<table class="Report-Table">
+		<tr>
+			<td>
+				<div class="printButton">
+					<a> Print Report </a>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+<!---             START OF REPORT             --->
+	
+<div class="printable">	
+<form id="form1" runat="server">
+        <div id="_main">
+            <div data-ng-controller="AtTaskJSONCtrl">
+                <div id="tabs">
+                    <ul class="tabs">
+                        <li><a href="#tabs-1">Status Report</a></li>
+                        <li><a href="#tabs-6">AtTask JSON</a></li>
+                    </ul>
+					
+                    <div id="tabs-1">
+						
+						<!----------------------------------------------->
+                        <!---                   HEADER                --->
+                        <!----------------------------------------------->
+
+                        <table class="Report-Table noPad" id="Title-Center">
+                            <tr class="noPad">
+                                <td class="noPad">
+                                    <div class="logo">
+                                        <img ng-src="{{logo}}"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="Report-Title noPad">
+                                        {{project.name}}<br>
+                                        <!--<font class="Report-Sub-Title">{{project.description}}</font>-->
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <hr>
+                        <br><br>
+						
+						<!----------------------------------------------->
+                        <!---              Project Map                --->
+                        <!----------------------------------------------->
+
+						
+						<!----------------------------------------------->
+                        <!---                   KPIs                  --->
+                        <!----------------------------------------------->
+						
+                        <table class="Report-Table">
+                            <tr>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Number of Issues
+                                        <br><br>
+                                        {{countOpenIssues()}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Number of Risks
+                                        <br><br>
+                                        {{countOpenRisks()}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Percent Complete
+                                        <br><br>
+                                        {{roundDouble(project.percentComplete)}}%
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Schedule Condition
+                                        <br><br>
+                                        {{project.Schedule_Condition}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Scope Condition
+                                        <br><br>
+                                        {{project.Scope_Condition}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+						
+						<table class="Report-Table">
+                            <tr>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Use Cases
+                                        <br><br>
+                                        {{project.Use_Cases_Identified}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Training / AAEP
+                                        <br><br>
+                                        {{project.TBMA_Status}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Rollout Planning
+                                        <br><br>
+                                        {{project.Rollout_Planning}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="kpiContainer">
+                                        Data Readiness
+                                        <br><br>
+                                        {{project.Data_Readiness}}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br><br>
+						
+						<!----------------------------------------------->
+                        <!---               PROJECT NOTES             --->
+                        <!----------------------------------------------->
+						<table class="Report-Table noPad">
+                            <tr class="noPad">
+                                <td>
+                                    <div class="noPad">
+                                        <b>Project Notes:</b>
+                                        <font class="centeredVertical textWrap">{{ project.Overall_Project_Status_Notes}}</font>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><br>
+
+						<!---                NEW TABLE                --->               
+						
+						<table class="Report-Table headerTable">
+                            <tr>
+						<!----------------------------------------------->
+                        <!---            PROJECT INFORMATION          --->
+                        <!----------------------------------------------->
+
+                                <td class="projectInformation" style="width:33.3%">
+                                    <span class="section-heading">Project Information</span><br>
+                                    <span class="section-subheading">as of <span id="rundate">javascript poke of date goes here</span></span>
+                                    <hr>
+
+                                    <table class="Project-Header-Table">
+                                        <tr>
+                                            <td class="centeredVertical">
+                                                Project Condition:
+                                            </td>
+                                            <td class="leftAlignContent">
+												<span class="condition_{{project.condition}}"></span>
+												<span style="margin-left:5px;">{{project.statusName}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> Week Ending:</td>
+                                            <td> {{weekEnding}}</td>
+                                        </tr>
+                                    </table>
+                                    <br>
+                                    <table class="Project-Header-Table">
+                                        <tr>
+                                            <td>Project Manager:</td>
+                                            <td>{{project.owner.name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Planned Start Date:</td>
+                                            <td>{{project.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Planned Completion Date:</td>
+                                            <td>{{project.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+								    <!----------------------------------------------->
+                                    <!---                 MILESTONES              --->
+                                    <!----------------------------------------------->
+
+								<td class="milestones">
+									
+                                    <span class="section-heading">Milestones</span><br>
+                                    <span class="section-subheading">by Task Number<hr></span>
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Planned Start</th>
+                                            <th>Planned Compl.</th>
+                                            <th>% Compl.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="milestone in milestones | orderBy: 'taskNumber'">
+                                            <td>
+                                                <a class="noDecoration" target="_blank" href="{{atTaskHost}}/task/view?ID={{task.ID}}">{{milestone.name}}</a>
+                                                <span ng-if="milestone.milestoneID==lastMilestoneID" title="You are here." style="font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+                                            </td>
+                                            <td>{{milestone.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{milestone.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{roundDouble(milestone.percentComplete)}}%</td>
+                                        </tr>
+										<tr ng-show="!milestones.length">
+											<td colspan="4" style="text-align: center"> No milestones to display </td>
+										</tr>                                   
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+						
+						<!---                NEW TABLE                --->               
+						
+                        <table class="Report-Table tasksTable">
+                            <tr>
+								
+						<!----------------------------------------------->
+                        <!---              COMPLETED TASKS            --->
+                        <!----------------------------------------------->
+
+                                <td class="completedTasks" style="width:33.3%">
+                                    <span class="section-heading">Tasks Completed Within 7 Days</span>
+                                    <br><span class="section-subheading">Filtered and Sorted by Actual Completion Date</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actual Compl.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="task in completedTasks | orderBy: 'actualCompletionDate'">
+                                            <td>
+                                                <a class="noDecoration" target="_blank" href="{{atTaskHost}}/task/view?ID={{task.ID}}">{{task.name}}</a>
+                                                <span ng-if="task.milestoneID==lastMilestoneID" title="You are here." style="font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+                                            </td>
+                                            <td>{{task.actualCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                        </tr>
+										<tr ng-show="!completedTasks.length">
+											<td colspan=2 style="text-align: center"> No tasks to display </td>
+										</tr>                                   </tbody>
+                                    </table>
+                                </td>
+
+                                <!----------------------------------------------->
+                                <!---                OPEN ISSUES              --->
+                                <!----------------------------------------------->
+								
+                                <td class="openIssues">
+                                    <span class="section-heading">Open Issues</span>
+                                    <br>
+                                    <span class="section-subheading">Filtered by status not equal to Closed, Sorted by Priority</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <th>Name</th>
+                                            <th>Planned Completion</th>
+                                            <th>Assigned To</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="issue in openIssues | orderBy: 'priority' : true">
+                                            <td nowrap>
+                                                <img class="smallStatusBubble" src="" width="10px" height="10px"
+                                                     ng-style="{'backgroundColor':'#'+ enumLookup('PRIORITY_OPTASK',issue.priority.toString()).color, 'border-color':'#'+ enumLookup('PRIORITY_OPTASK',issue.priority.toString()).borderColor}"/>
+                                                {{enumLookup('PRIORITY_OPTASK',issue.priority.toString()).label}}
+												{{issue.priorityName}}
+                                            </td>
+                                            <td>
+                                                <a class="noDecoration" href="{{atTaskHost}}/issue/view?ID={{issue.ID}}" target="_blank">{{issue.name}}</a>
+                                            </td>
+                                            <td>{{issue.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td> {{issue.assignedTo.name}}</td>
+                                            <td class="textWrap">{{issue.description}}</td>
+                                        </tr>
+										<tr ng-show="!openIssues.length">
+											<td colspan="5" style="text-align: center"> No issues to display </td>
+										</tr>                                   
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><br>
+
+						<!---                NEW TABLE                --->               
+
+                        <table class="Report-Table issuesTable">
+                            <tr>
+								
+                                <!----------------------------------------------->
+                                <!---               PAST DUE TASKS             --->
+                                <!----------------------------------------------->
+
+                                <td class="pastdueTasks" style="width:33.3%">
+                                    <span class="section-heading">Tasks Past Due </span>
+                                    <br><span class="section-subheading">Filtered and Sorted by Task Due Date</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Planned Start</th>
+                                            <th>Planned Compl.</th>
+                                            <th>% Compl.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="task in pastdueTasks | orderBy: 'plannedCompletionDate'">
+                                            <td>
+                                                <a class="noDecoration" target="_blank" href="{{atTaskHost}}/task/view?ID={{task.ID}}">{{task.name}}</a>
+                                                <span ng-if="task.milestoneID==lastMilestoneID" title="You are here." style="font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+                                            </td>
+                                            <td>{{task.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{task.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{roundDouble(task.percentComplete)}}%</td>
+                                        </tr>
+										<tr ng-show="!pastdueTasks.length">
+											<td colspan="4" style="text-align: center"> No tasks to display </td>
+										</tr>                                   
+                                        </tbody>
+                                    </table>
+                                </td>
+
+                                <!----------------------------------------------->
+                                <!---                OPEN RISKS               --->
+                                <!----------------------------------------------->
+								
+                                <td class="openRisks">
+                                    <span class="section-heading">Open Risks</span>
+                                    <br><span class="section-subheading">Filtered by status not equal to Closed, Sorted by Priority</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <th>Name</th>
+                                            <th>Planned Completion</th>
+                                            <th>Assigned To</th>
+											<th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="risk in openRisks | orderBy: 'priority' : true">
+                                            <td nowrap>
+                                                <img class="smallStatusBubble" src="" width="10px" height="10px"
+                                                     ng-style="{'backgroundColor':'#'+ enumLookup('PRIORITY_OPTASK',risk.priority.toString()).color, 'border-color':'#'+ enumLookup('PRIORITY_OPTASK',risk.priority.toString()).borderColor}"/>
+                                                {{enumLookup('PRIORITY_OPTASK',risk.priority.toString()).label}}
+                                            </td>
+                                            <td>
+                                                <a class="noDecoration" href="{{atTaskHost}}/risk/view?ID={{risk.ID}}" target="_blank">{{risk.name}}</a>
+                                            </td>
+                                            <td>{{risk.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td> {{risk.assignedTo.name}}</td>
+											<td class="textWrap">{{risk.description}}</td>
+                                        </tr>
+										<tr ng-show="!openRisks.length">
+											<td colspan="5" style="text-align: center"> No risks to display </td>
+										</tr>                                   
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <br><br>
+
+						<!---                NEW TABLE                --->               
+
+                        <table class="Report-Table risksTable">
+                            <tr>
+								
+                                <!----------------------------------------------->
+                                <!---               PLANNED TASKS             --->
+                                <!----------------------------------------------->
+
+                                <td class="plannedTasks" style="width:33.3%">
+                                    <span class="section-heading">Tasks Planned In The Next 7 Days</span>
+                                    <br><span class="section-subheading">Filtered and Sorted by Planned Start Date</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Planned Start</th>
+                                            <th>Planned Compl.</th>
+                                            <th>% Compl.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="task in plannedTasks | orderBy: 'plannedStartDate'">
+                                            <td>
+                                                <a class="noDecoration" target="_blank" href="{{atTaskHost}}/task/view?ID={{task.ID}}">{{task.name}}</a>
+                                                <span ng-if="task.milestoneID==lastMilestoneID" title="You are here." style="font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+                                            </td>
+                                            <td>{{task.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{task.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td>{{roundDouble(task.percentComplete)}}%</td>
+                                        </tr>
+										<tr ng-show="!plannedTasks.length">
+											<td colspan="4" style="text-align: center"> No tasks to display </td>
+										</tr>                                   
+                                        </tbody>
+                                    </table>
+                                </td>
+								
+                                <!----------------------------------------------->
+                                <!---      EXTRA TABLE (OLD-OPEN RISKS)       --->
+                                <!----------------------------------------------->
+								
+                                <td class="openRisks">
+                                    <!--<span class="section-heading">*Open Risks</span>
+                                    <br><span class="section-subheading">Filtered by status not equal to Closed & Resolved, Sorted by Priority</span>
+                                    <hr>
+
+                                    <table class="Report-Data-Table">
+                                        <thead>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <th>Name</th>
+                                            <th>Planned Completion</th>
+                                            <th>Assigned To</th>
+											<th>Description</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr data-ng-repeat="risk in openRisks | orderBy: 'priority' : true">
+                                            <td nowrap>
+                                                <img class="smallStatusBubble" src="" width="10px" height="10px"
+                                                     ng-style="{'backgroundColor':'#'+ enumLookup('PRIORITY_OPTASK',risk.priority.toString()).color, 'border-color':'#'+ enumLookup('PRIORITY_OPTASK',risk.priority.toString()).borderColor}"/>
+                                                {{enumLookup('PRIORITY_OPTASK',risk.priority.toString()).label}}
+                                            </td>
+                                            <td>
+                                                <a class="noDecoration" href="{{atTaskHost}}/risk/view?ID={{risk.ID}}" target="_blank">{{risk.name}}</a>
+                                            </td>
+                                            <td>{{risk.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                            <td> {{risk.assignedTo.name}}</td>
+											<td>{{risk.description}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>-->
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+					
+<!----------------------------------------------->
+<!---                FOOTER                   --->
+<!----------------------------------------------->
+	<div class="footer">
+  		<table>
+			<tr>
+				<td>
+					Version 2.5.3
+				</td>
+				<td>
+					<a target="_blank" href="https://apptio.sharepoint.com/:w:/s/CS-All/ESigURCa3H5Op0vtFuIBIHIBvtngG1r-dzOvX0iTX49vpA?e=bihnAD">Change Log</a>				
+				</td>
+			</tr>
+		</table>
+	</div>
+
+                    <div id="tabs-6">
+                        <pre>{{ logoJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ enumJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ projectJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ milestonesJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ completedTasksJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ plannedTasksJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ closedIssuesJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ openIssuesJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ closedRisksJson() }}</pre>
+                        <br><br><br>
+                        <pre>{{ openRisksJson() }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="_error" style="display: none;">
+            <span style="">Oops, we seem to have encountered an error.</span>
+            <br><br>
+        </div>
+</form>
+</div>
+
+
+	
+	
+	<script type="text/javascript">
+
+    var ATTASK_INSTANCE = '';
+    if (document.referrer != "") {
+
+        ATTASK_INSTANCE = document.referrer.substring(8, document.referrer.indexOf(".com") + 4);
+    }
+    else {
+        ATTASK_INSTANCE = 'atappstore.attask-ondemand.com';
+    }
+
+    $(function () {
+        $("#tabs").tabs();
+    });
+
+    // get value from querystring
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    var app = angular.module('app', []);
+
+    //
+    // Angular.js, for easy layouts from JSON
+    // See tutorial at:
+    //    https://angularjs.org/
+    //
+    	
+	app.controller('AtTaskJSONCtrl', function ($scope, $http, $sce, $filter) {
+
+        $scope.atTaskSessionID = getParameterByName("s");
+        $scope.atTaskProjectID = getParameterByName("o");
+        $scope.atTaskCustomerID = getParameterByName("h");
+        $scope.atTaskHost = 'https://' + ATTASK_INSTANCE;
+
+        var nextFri = new Date(); //Date(2014,6,6,1,1,1,1);
+        nextFri.setDate(nextFri.getDate() - (nextFri.getDay() - 5));
+        $scope.weekEnding = nextFri.toDateString();
+
+        //&enumClass=STATUS&enumClass_Mod=contains
+        $scope.enum = {};
+        var enumsURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/cstem/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=color,label,value,description,enumClass';
+        $http.get(enumsURL)
+            .success(function (data, status) {
+                $scope.enum = data.data;
+
+                if ($filter('filter')($scope.enum, {enumClass: 'PRIORITY_OPTASK'}).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_PRIORITY_OPTASK);
+                if ($filter('filter')($scope.enum, {enumClass: 'PRIORITY_PROJ'}).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_PRIORITY_PROJ);
+                if ($filter('filter')($scope.enum, {enumClass: 'STATUS_OPTASK'}).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_OPTASK);
+                if ($filter('filter')($scope.enum, {enumClass: 'STATUS_PROJ'}).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_PROJ);
+                if ($filter('filter')($scope.enum, {enumClass: 'STATUS_TASK'}).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_TASK);
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+				
+        // **************************************************************\
+        //                              LOGO
+        // **************************************************************/
+
+        $scope.logoProperties = [];
+        $scope.logoURL = 'https://' + ATTASK_INSTANCE + '/attask/api-internal/brnd/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=*';
+
+        $scope.logo = 'https://s3-us-west-2.amazonaws.com/apptiopm.com/project-status-report/logomedium.png';
+        $http.get($scope.logoURL)
+            .success(function (data, status) {
+
+                $scope.logoProperties = JSON.parse(data.data[0].details);
+                if ($scope.logoProperties && $scope.logoProperties.loginLogo) {
+                    $scope.logo = 'https://' + ATTASK_INSTANCE + $scope.logoProperties.loginLogo.URL;
+                }
+
+            }).error(function (data, status) {
+            // Some error occurred
+            $scope.error = 'Logo load failed ' + status;
+            var y = status;
+        });
+
+        // **************************************************************\
+        //                              PROJECT
+        // **************************************************************/
+
+        $scope.project = {};
+        var projectFields = [
+            'company', 'name', 'status', 'sponsor', 'condition', 'lastUpdateDate', 'plannedStartDate', 'plannedCompletionDate', 'actualStartDate', 'actualCompletionDate', 'milestonePathID', 'description', 'owner:name', 'lastConditionNote:*', 'portfolio:name', 'percentComplete', 'portfolio:owner:name', 'DE:Overall Project Status Notes', 'DE:Schedule Condition', 'DE:Scope Condition', 'DE:TBMA Status', 'DE:Use Cases Identified','DE:Rollout Planning','DE:Data Readiness'
+        ];
+
+        var projectsURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/proj/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields= ' + projectFields.join(',') + '&ID=' + $scope.atTaskProjectID;
+
+        $http.get(projectsURL)
+            .success(function (data, status) {
+                var temp = data.data[0];
+                temp.Overall_Project_Status_Notes = temp["DE:Overall Project Status Notes"];
+                temp.Schedule_Condition = temp["DE:Schedule Condition"];
+                temp.Scope_Condition = temp["DE:Scope Condition"];
+				temp.TBMA_Status = temp["DE:TBMA Status"];
+				temp.Use_Cases_Identified = temp["DE:Use Cases Identified"];
+				temp.Rollout_Planning = temp["DE:Rollout Planning"];
+				temp.Data_Readiness = temp["DE:Data Readiness"];
+                $scope.project = data.data[0];
+				// Add status name to project
+				$scope.project.statusName = statusMap[$scope.project.condition];
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+			
+        // **************************************************************\
+        //                             MILESTONES
+        // **************************************************************/
+
+        var milestoneFields = ['name', 'description', 'handoffDate', 'plannedStartDate', 'plannedCompletionDate', 'projectedCompletionDate',
+            'progressStatus', 'plannedDuration', 'status', 'percentComplete', 'actualStartDate:*', 'actualCompletionDate', 'milestoneID', 'DE:Milestone Types','taskNumber'];
+
+        // Set to and from dates for filter
+        var milestonesStart = new Date(), milestonesEnd = new Date();
+        milestonesStart.setDate(nextFri.getDate() - 1000);
+        milestonesEnd.setDate(nextFri.getDate() + 1000);
+
+        // TODO: Find out what date range to use for milestones and add or filters to query.
+        var milestoneFilter = '&OR:1:numberOfChildren=0' + '&OR:1:numberOfChildren_Mod=eq' + '&OR:1:';
+
+        $scope.milestones = [];
+        $scope.milestonesURL = "https://" + ATTASK_INSTANCE + "/attask/api/v9.0/task/search?method=GET" +
+            "&sessionID=" + $scope.atTaskSessionID +
+            "&projectID=" + $scope.atTaskProjectID +
+            "&DE:Milestone%20Types=Project%20Milestone" +
+            "&DE:Milestone%20Types=Financial%20Milestone" +
+            "&fields=" + milestoneFields.join(",");
+        $scope.lastMilestoneID = "1";
+
+        $http.get($scope.milestonesURL)
+            .success(function (data, status) {
+                for (i = 0; i < data.data.length; i++) {
+                    var temp = data.data[i];
+                    temp.milestoneType = temp["DE:Milestone Types"];
+                    $scope.milestones.push(temp);
+                }
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // **************************************************************\
+        //                              TASKS
+        // **************************************************************/
+
+        var taskFields = ['name', 'description', 'handoffDate', 'plannedStartDate', 'plannedCompletionDate', 'projectedCompletionDate',
+            'progressStatus', 'plannedDuration', 'status', 'percentComplete', 'actualStartDate:*', 'actualCompletionDate', 'milestoneID'];
+        var taskStaticFilters = ['projectID=' + $scope.atTaskProjectID];
+
+        // ------ Completed Tasks ------ //
+
+        // Set to and from dates for filter
+        var completeTaskStart = new Date(), completedTaskEnd = new Date();
+        completeTaskStart.setDate(nextFri.getDate() - 7);
+        completedTaskEnd.setDate(nextFri.getDate());
+
+        var completedTasksOrFilter = '&OR:1:actualCompletionDate=' + completeTaskStart.toISOString() + '&OR:1:actualCompletionDate_Mod=between&OR:1:actualCompletionDate_Range=' + completedTaskEnd.toISOString() + '&OR:1:status=CPL' + '&OR:1:status_Mod=eq' + '&OR:1:numberOfChildren=0' + '&OR:1:numberOfChildren_Mod=eq' + '&OR:1:' + taskStaticFilters.join('&OR:1:');
+
+        $scope.completedTasks = [];
+        $scope.completedTasksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/task/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + taskFields.join(",") + completedTasksOrFilter;
+		
+        $http.get($scope.completedTasksURL)
+            .success(function (data, status) {
+                $scope.completedTasks = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // ------ Planned Tasks ------ //
+
+        // Set to and from dates for filter
+        var plannedTaskStart = new Date(), plannedTaskEnd = new Date();
+        plannedTaskStart.setDate(nextFri.getDate());
+        plannedTaskEnd.setDate(nextFri.getDate() + 7);
+
+        var plannedTasksOrFilter = '&OR:1:plannedCompletionDate=' + '$$TODAY' + '&OR:1:plannedCompletionDate_Mod=between&OR:1:plannedCompletionDate_Range=' + '$$TODAY+7d' + '&OR:1:status=CPL' + '&OR:1:status_Mod=ne' + '&OR:1:numberOfChildren=0' + '&OR:1:numberOfChildren_Mod=eq' + '&OR:1:' + taskStaticFilters.join('&OR:1:') + '&OR:2:plannedStartDate=' + '$$TODAY' + '&OR:2:plannedStartDate_Mod=between&OR:2:plannedStartDate_Range=' + '$$TODAY+7d' + '&OR:2:status=CPL' + '&OR:2:status_Mod=ne' + '&OR:2:numberOfChildren=0' + '&OR:2:numberOfChildren_Mod=eq' + '&OR:2:' + taskStaticFilters.join('&OR:2:');
+        $scope.plannedTasks = [];
+        $scope.plannedTasksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/task/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + taskFields.join(",") + plannedTasksOrFilter;
+
+        $http.get($scope.plannedTasksURL)
+            .success(function (data, status) {
+                $scope.plannedTasks = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // ------ Pastdue Tasks ------ //
+
+        // Set to and from dates for filter
+        var pastdueTaskStart = new Date(), pastdueTaskEnd = new Date();
+        pastdueTaskStart.setDate(nextFri.getDate());
+        pastdueTaskEnd.setDate(nextFri.getDate() + 7);
+
+		var pastdueTasksOrFilter = '&OR:1:plannedCompletionDate=' + '$$TODAY' + '&OR:1:plannedCompletionDate_Mod=lt' + '&OR:1:numberOfChildren=0' + '&OR:1:numberOfChildren_Mod=eq' + '&OR:1:isComplete=false' + '&OR:1:isComplete_Mod=eq' + '&OR:1:' + taskStaticFilters.join('&OR:1:');
+		
+        $scope.pastdueTasks = [];
+        $scope.pastdueTasksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/task/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + taskFields.join(",") + pastdueTasksOrFilter;
+
+        $http.get($scope.pastdueTasksURL)
+            .success(function (data, status) {
+                $scope.pastdueTasks = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+		
+        // **************************************************************\
+        //                              ISSUES
+        // **************************************************************/
+		
+        var issueFields = ['name', 'priority', 'workRequired', 'plannedCompletionDate', 'actualCompletionDate', 'actualStartDate', 'status', 'assignedTo', 'description', 'DE:StatusEquatesWith'];
+        var issueStaticFilters = ['projectID=' + $scope.atTaskProjectID];
+
+        // ------ Closed Issues ------ //
+
+        // Set to and from dates for filter
+        var closedIssueStart = new Date(), closeIssueEnd = new Date();
+        closedIssueStart.setDate(nextFri.getDate() - 7);
+        closeIssueEnd.setDate(nextFri.getDate());
+
+		var closedIssueOrFilter = '&actualCompletionDate=' + closedIssueStart.toISOString() + '&actualCompletionDate_Mod=between&actualCompletionDate_Range=' + closeIssueEnd.toISOString() + '&DE:StatusEquatesWith=CLS' + '&' + issueStaticFilters.join('&')
+
+        $scope.closedIssues = [];
+        $scope.closedIssuesURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/optask/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + issueFields.join(",") + '&projectID=' + $scope.atTaskProjectID + '&DE:Type=Issue&DE:Type_Mod=eq' + closedIssueOrFilter;
+
+        $http.get($scope.closedIssuesURL)
+            .success(function (data, status) {
+                $scope.closedIssues = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // ------ Open Issues ------ //
+
+        // Set to and from dates for filter
+        var openIssueStart = new Date(), openIssueEnd = new Date();
+        openIssueStart.setDate(nextFri.getDate());
+        openIssueEnd.setDate(nextFri.getDate() + 7);
+
+		var openIssueOrFilter ='&DE:StatusEquatesWith=INP&DE:StatusEquatesWith=ONH&DE:StatusEquatesWith=NEW&DE:StatusEquatesWith=AWF' + '&' + issueStaticFilters.join('&')
+
+        $scope.openIssues = [];
+        $scope.openIssuesURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/optask/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + issueFields.join(",") + '&projectID=' + $scope.atTaskProjectID + '&DE:Type=Issue&DE:Type_Mod=eq' + openIssueOrFilter;
+
+		var priorityNameMap = {0: "None - Blue", 1: "Low - Teal", 2: "Normal - Green", 3: "High - Amber", 4: "Urgent - Red"};
+		
+        $http.get($scope.openIssuesURL)
+            .success(function (data, status) {
+                $scope.openIssues = data.data;
+				//$scope.issue.name = priorityNameMap[$scope.issue.priority];
+				//for (var issuePText : $scope.openIssues) {
+					//issuePText.name = priorityNameMap[$scope.issue.priority]}
+				//$scope.issue.priorityNamessue.priorityName = priorityNameMap[$scope.issue.priority];
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+		
+        // **************************************************************\
+        //                              RISKS
+        // **************************************************************/
+
+        var riskFields = ['name', 'priority', 'workRequired', 'plannedCompletionDate', 'actualCompletionDate', 'status', 'assignedTo', 'description','DE:StatusEquatesWith'];
+        var riskStaticFilters = ['projectID=' + $scope.atTaskProjectID];
+
+        // ------ Closed Risks ------ //
+
+        // Set to and from dates for filter
+        var closedRiskStart = new Date(), closedRiskEnd = new Date();
+        closedRiskStart.setDate(nextFri.getDate() - 7);
+        closedRiskEnd.setDate(nextFri.getDate());
+
+		var closedRiskOrFilter = '&actualCompletionDate=' + closedRiskStart.toISOString() + '&actualCompletionDate_Mod=between&actualCompletionDate_Range=' + closedRiskEnd.toISOString() + '&DE:StatusEquatesWith=CLS' + '&' + riskStaticFilters.join('&')
+		
+		$scope.closedRisks = [];
+        $scope.closedRisksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/optask/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + riskFields.join(",") + '&projectID=' + $scope.atTaskProjectID + '&DE:Type=Risk&DE:Type_Mod=eq' + closedRiskOrFilter; 
+		
+        $http.get($scope.closedRisksURL)
+            .success(function (data, status) {
+                $scope.closedRisks = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // ------ Open Risks ------ //
+
+        // Set to and from dates for filter
+        var openRiskStart = new Date(), openRiskEnd = new Date();
+        openRiskStart.setDate(nextFri.getDate() - 7);
+        openRiskEnd.setDate(nextFri.getDate());
+        
+		var openRiskOrFilter = '&DE:StatusEquatesWith=INP&DE:StatusEquatesWith=ONH&DE:StatusEquatesWith=NEW&DE:StatusEquatesWith=AWF' + '&' + issueStaticFilters.join('&')
+
+        $scope.openRisks = [];
+        $scope.openRisksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/optask/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + riskFields.join(",") + '&projectID=' + $scope.atTaskProjectID + '&DE:Type=Risk&DE:Type_Mod=eq' + openRiskOrFilter;
+
+        $http.get($scope.openRisksURL)
+            .success(function (data, status) {
+                $scope.openRisks = data.data;
+            }).error(function (data, status) {
+            // Some error occurred
+            var x = data;
+            var y = status;
+        });
+
+        // **************************************************************\
+        //                             UTIL
+        // **************************************************************/
+
+        $scope.logoJson = function () {
+            var json = "Logo JSON is undefined";
+            if ($scope.logoProperties) {
+                json = dojo.toJson($scope.logoProperties, true);
+            }
+            return $scope.logoURL + ' ' + $scope.logo + ' ' + json;
+        };
+
+        $scope.enumJson = function () {
+            var json = "Enum JSON is undefined";
+            if ($scope.enum) {
+                json = dojo.toJson($scope.enum, true);
+            }
+            return enumsURL + ' ' + $filter('filter')($scope.enum, {enumClass: 'PRIORITY_OPTASK'}).length + ' ' + json;
+        };
+
+        $scope.projectJson = function () {
+            var json = 'Project JSON is undefined';
+            var testUrl = 'https://' + ATTASK_INSTANCE + '/attask/api/v9.0/proj/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=*&' + 'ID=' + $scope.atTaskProjectID;
+            if ($scope.project) {
+                json = dojo.toJson($scope.project, true);
+            }
+            return testUrl + json;
+        };
+
+        $scope.milestonesJson = function () {
+            var json = "Milestones JSON is undefined";
+            if ($scope.milestones) {
+                json = dojo.toJson($scope.milestones, true);
+            }
+            return new Date('Jan 01 1900') + ' ' + $scope.maxDate + ' ' + $scope.lastMilestoneID + json;
+        };
+
+        $scope.completedTasksJson = function () {
+            var json = "Tasks JSON is undefined";
+            if ($scope.completedTasks) {
+                json = dojo.toJson($scope.completedTasks, true);
+            }
+            return $scope.completedTasksURL + '' + json;
+        };
+
+        $scope.plannedTasksJson = function () {
+            var json = "Tasks JSON is undefined";
+            if ($scope.plannedTasks) {
+                json = dojo.toJson($scope.plannedTasks, true);
+            }
+            return $scope.plannedTasksURL + '' + json;
+        };
+
+        $scope.closedIssuesJson = function () {
+            var json = "Issues JSON is undefined";
+            if ($scope.closedIssues) {
+                json = dojo.toJson($scope.closedIssues, true);
+            }
+            return $scope.closedIssuesURL + ' ' + json;
+        };
+
+        $scope.openIssuesJson = function () {
+            var json = "Issues JSON is undefined";
+            if ($scope.openIssues) {
+                json = dojo.toJson($scope.openIssues, true);
+            }
+            return $scope.openIssuesURL + ' ' + json;
+        };
+
+        $scope.closedRisksJson = function () {
+            var json = "Issues JSON is undefined";
+            if ($scope.closedRisks) {
+                json = dojo.toJson($scope.closedRisks, true);
+            }
+            return $scope.closedRisksURL + ' ' + json;
+        };
+
+        $scope.openRisksJson = function () {
+            var json = "Issues JSON is undefined";
+            if ($scope.openRisks) {
+                json = dojo.toJson($scope.openRisks, true);
+            }
+            return $scope.openRisksURL + ' ' + json;
+        };
+
+        $scope.parameterValue = function (name) {
+            if ($scope.project) {
+                for (var key in $scope.project.parameterValues) {
+                    if (key == name) {
+                        return $scope.project.parameterValues[key];
+                    }
+                }
+            }
+            return null;
+        };
+
+        $scope.enumLookup = function (enumType, lookupVal) {
+            return $filter('filter')($scope.enum, {value: lookupVal, enumClass: enumType}, true)[0];
+        };
+
+        $scope.render_as_html = function (html_code) {
+            return $sce.trustAsHtml(html_code);
+        };
+
+        $scope.render_as_date = function (val) {
+            if (val == null) {
+                return '';
+            }
+            if (val.length < 10) {
+                return val;
+            }
+            return $sce.trustAsHtml(val.substr(0, 10));
+        };
+
+        $scope.roundDouble = function (d) {
+            var rounded = Math.round(d);
+
+            if (Number.isNaN(rounded)) {
+                return 0;
+            }
+
+            return rounded;
+        };
+
+        $scope.countOpenIssues = function () {
+            if ($scope.openIssues) {
+                return $scope.openIssues.length;
+            } else {
+                return 0;
+            }
+        };
+
+        $scope.countOpenRisks = function () {
+            if ($scope.openRisks) {
+                return $scope.openRisks.length;
+            } else {
+                return 0;
+            }
+        };
+    });
+</script>
+
+<script type="text/javascript">
+    var d = new Date();
+    document.getElementById("rundate").innerHTML = d.toLocaleString();
+</script>
+
+<script type="text/javascript">
+    //Set Default values for statuses
+    var DEFAULT_PRIORITY_OPTASK = [{
+        "color": "3D8FEA",
+        "borderColor": "285D99",
+        "equatesWith": null,
+        "label": "None",
+        "objCode": "CSTEM",
+        "value": "0",
+        "description": null,
+        "enumClass": "PRIORITY_OPTASK",
+		"name": "Yellow"
+    },
+        {
+            "color": "AAEA3A",
+            "borderColor": "55C732",
+            "equatesWith": null,
+            "label": "Low",
+            "objCode": "CSTEM",
+            "value": "1",
+            "description": null,
+            "enumClass": "PRIORITY_OPTASK"
+        },
+        {
+            "color": "F3F83A",
+            "borderColor": "CFCC33",
+            "equatesWith": null,
+            "label": "Normal",
+            "objCode": "CSTEM",
+            "value": "2",
+            "description": null,
+            "enumClass": "PRIORITY_OPTASK"
+        },
+        {
+            "color": "FFC000",
+            "borderColor": "F0AA00",
+            "equatesWith": null,
+            "label": "High",
+            "objCode": "CSTEM",
+            "value": "3",
+            "description": null,
+            "enumClass": "PRIORITY_OPTASK"
+        },
+        {
+            "color": "FF0000",
+            "borderColor": "E00000",
+            "equatesWith": null,
+            "label": "Urgent",
+            "objCode": "CSTEM",
+            "value": "4",
+            "description": null,
+            "enumClass": "PRIORITY_OPTASK"
+        }];
+
+    var DEFAULT_PRIORITY_PROJ = [{
+        "color": "3D8FEA",
+        "equatesWith": null,
+        "label": "None",
+        "objCode": "CSTEM",
+        "value": "0",
+        "description": null,
+        "enumClass": "PRIORITY_PROJ"
+    },
+        {
+            "color": "AAEA3A",
+            "equatesWith": null,
+            "label": "Low",
+            "objCode": "CSTEM",
+            "value": "1",
+            "description": null,
+            "enumClass": "PRIORITY_PROJ"
+        },
+        {
+            "color": "E4EA3A",
+            "equatesWith": null,
+            "label": "Normal",
+            "objCode": "CSTEM",
+            "value": "2",
+            "description": null,
+            "enumClass": "PRIORITY_PROJ"
+        },
+        {
+            "color": "FFC000",
+            "equatesWith": null,
+            "label": "High",
+            "objCode": "CSTEM",
+            "value": "3",
+            "description": null,
+            "enumClass": "PRIORITY_PROJ"
+        },
+        {
+            "color": "E00000",
+            "equatesWith": null,
+            "label": "Urgent",
+            "objCode": "CSTEM",
+            "value": "4",
+            "description": null,
+            "enumClass": "PRIORITY_PROJ"
+        }];
+
+    var DEFAULT_STATUS_OPTASK = [{
+        "color": "FF0000",
+        "equatesWith": "ONH",
+        "label": "Awaiting Feedback",
+        "objCode": "CSTEM",
+        "value": "AWF",
+        "description": null,
+        "enumClass": "STATUS_OPTASK"
+    },
+        {
+            "color": "B4B4B4",
+            "equatesWith": "CLS",
+            "label": "Closed",
+            "objCode": "CSTEM",
+            "value": "CLS",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "00FF00",
+            "equatesWith": "INP",
+            "label": "In Progress",
+            "objCode": "CSTEM",
+            "value": "INP",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "FFFFFF",
+            "equatesWith": "NEW",
+            "label": "New",
+            "objCode": "CSTEM",
+            "value": "NEW",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "0000FF",
+            "equatesWith": "ONH",
+            "label": "On Hold",
+            "objCode": "CSTEM",
+            "value": "ONH",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "007100",
+            "equatesWith": "ROP",
+            "label": "Reopened",
+            "objCode": "CSTEM",
+            "value": "ROP",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "007100",
+            "equatesWith": "CND",
+            "label": "Cannot Duplicate",
+            "objCode": "CSTEM",
+            "value": "CND",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "007100",
+            "equatesWith": "WTR",
+            "label": "Won't Resolve",
+            "objCode": "CSTEM",
+            "value": "WTR",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "007100",
+            "equatesWith": "RLV",
+            "label": "Resolved",
+            "objCode": "CSTEM",
+            "value": "RLV",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+        {
+            "color": "007100",
+            "equatesWith": "VCP",
+            "label": "Verified Complete",
+            "objCode": "CSTEM",
+            "value": "VCP",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        }];
+
+    var DEFAULT_STATUS_PROJ = [{
+        "color": "000000",
+        "equatesWith": "APR",
+        "label": "Approved",
+        "objCode": "CSTEM",
+        "value": "APR",
+        "description": null,
+        "enumClass": "STATUS_PROJ"
+    },
+        {
+            "color": "007100",
+            "equatesWith": "CPL",
+            "label": "Complete",
+            "objCode": "CSTEM",
+            "value": "CPL",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "00FF00",
+            "equatesWith": "CUR",
+            "label": "Current",
+            "objCode": "CSTEM",
+            "value": "CUR",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "000000",
+            "equatesWith": "DED",
+            "label": "Dead",
+            "objCode": "CSTEM",
+            "value": "DED",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "000000",
+            "equatesWith": "IDA",
+            "label": "Idea",
+            "objCode": "CSTEM",
+            "value": "IDA",
+            "description": "Not Using",
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "000000",
+            "equatesWith": "ONH",
+            "label": "On Hold ",
+            "objCode": "CSTEM",
+            "value": "ONH",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "FFFFFF",
+            "equatesWith": "PLN",
+            "label": "Planning",
+            "objCode": "CSTEM",
+            "value": "PLN",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "FF0000",
+            "equatesWith": "REJ",
+            "label": "Rejected",
+            "objCode": "CSTEM",
+            "value": "REJ",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+        {
+            "color": "000000",
+            "equatesWith": "REQ",
+            "label": "Requested",
+            "objCode": "CSTEM",
+            "value": "REQ",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },];
+
+    var DEFAULT_STATUS_TASK = [{
+        "color": "B4B4B4",
+        "equatesWith": "CPL",
+        "label": "Complete",
+        "objCode": "CSTEM",
+        "value": "CPL",
+        "description": null,
+        "enumClass": "STATUS_TASK"
+    },
+        {
+            "color": "0000FF",
+            "equatesWith": "ONH",
+            "label": "On Hold",
+            "objCode": "CSTEM",
+            "value": "ONH",
+            "description": null,
+            "enumClass": "STATUS_TASK"
+        },
+        {
+            "color": "39FF39",
+            "equatesWith": "INP",
+            "label": "In Progress",
+            "objCode": "CSTEM",
+            "value": "INP",
+            "description": null,
+            "enumClass": "STATUS_TASK"
+        },
+        {
+            "color": "FFFFFF",
+            "equatesWith": "NEW",
+            "label": "New",
+            "objCode": "CSTEM",
+            "value": "NEW",
+            "description": null,
+            "enumClass": "STATUS_TASK"
+        }];
+</script>
+
+<script type="text/javascript">
+        // When the document is ready, initialize the link so
+        // that when it is clicked, the printable area of the
+        // page will print.
+        $(
+            function(){
+                // Hook up the print link.
+                $( "a" )
+                    .attr( "href", "javascript:void(0)" )
+                    .click(
+                        function(){
+                            // Print the DIV.
+                            $( ".printable" ).print();
+                            // Cancel click event.
+                            return( false );
+                        }
+                        )
+                ;
+            }
+            );
+	// Create a jquery plugin that prints the given element.
+	jQuery.fn.print = function(){
+    // NOTE: We are trimming the jQuery collection down to the
+    // first element in the collection.
+    if (this.size() > 1){
+        this.eq( 0 ).print();
+        return;
+    } else if (!this.size()){
+        return;
+    }
+
+    // ASSERT: At this point, we know that the current jQuery
+    // collection (as defined by THIS), contains only one
+    // printable element.
+
+    // Create a random name for the print frame.
+    var strFrameName = ("status_report-" + (new Date()).getTime());
+
+    // Create an iFrame with the new name.
+    var jFrame = $( "<iframe name='" + strFrameName + "'>" );
+
+    // Hide the frame (sort of) and attach to the body.
+    jFrame
+        .css( "width", "1px" )
+        .css( "height", "1px" )
+        .css( "position", "absolute" )
+        .css( "left", "-9999px" )
+        .appendTo( $( "body:first" ) )
+    ;
+
+    // Get a FRAMES reference to the new frame.
+    var objFrame = window.frames[ strFrameName ];
+
+    // Get a reference to the DOM in the new frame.
+    var objDoc = objFrame.document;
+
+    // Grab all the style tags and copy to the new
+    // document so that we capture look and feel of
+    // the current document.
+
+    // Create a temp document DIV to hold the style tags.
+    // This is the only way I could find to get the style
+    // tags into IE.
+    var jStyleDiv = $( "<div>" ).append(
+        $( "style" ).clone()
+        );
+
+    // Write the HTML for the document. In this, we will
+    // write out the HTML of the current element.
+    objDoc.open();
+    objDoc.write( "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" );
+    objDoc.write( "<html>" );
+	objDoc.write( "<body onload='this.focus();this.print();'>");
+    objDoc.write( "<head>" );
+    objDoc.write( "<title>" );
+    objDoc.write( document.title );
+    objDoc.write( "</title>" );
+    objDoc.write( jStyleDiv.html() );
+	objDoc.write( "<style type=\"text/css\"> @import url(\"./status_report.css\") </style>");
+    objDoc.write( "</head>" );
+    objDoc.write( this.html() );
+    objDoc.write( "</body>" );
+    objDoc.write( "</html>" );
+    objDoc.close();
+
+    // Print the document.
+    objFrame.focus();
+    objFrame.print();
+
+    // Have the frame remove itself in about a minute so that
+    // we don't build up too many of these frames.
+    setTimeout(
+        
+	function(){
+            jFrame.remove();
+        },
+        (60 * 1000)
+        );
+}
+	</script>
+		
+</body>
+</html>
