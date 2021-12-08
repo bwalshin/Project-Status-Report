@@ -1,0 +1,1212 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" data-ng-app="app">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("dojo", "1.7");
+    </script>
+   <style type="text/css">
+
+       
+
+       body {
+           min-width: 650px; /* 2x LC width + RC width */
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 10px;
+       }
+#page-header 
+{
+    width: 100%;
+    text-align: center;
+    background-color: #bbbbbb;
+    padding: 10px;
+}
+
+.logo {
+           color: red;
+           padding: 3px 10px 3px 5px;
+           text-align: left;
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 8px;
+           font-weight:bold;
+           border-width:thin;
+           width:220px;
+       }
+
+       .Project-Header-Table td:first-child {
+           color: black;
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 12px;
+           font-weight: normal;
+           text-align: right;
+       }
+
+
+       .Project-Header-Table td:nth-child(2) {
+           color: blue;
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 12px;
+           font-weight: normal;
+           text-align: left;
+       }
+
+       .Report-Title {
+           color: black;
+           font-family: Verdana,Arial,sans-serif;
+           font-size:20px;
+           font-weight:normal;
+           text-align:center;
+       }
+       .Report-Sub-Title {
+           color: black;
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 12px;
+           font-weight: normal;
+           text-align: center;
+       }
+
+       .Report-Table {
+           border: solid;
+           border-color: lightgrey;
+           border-width:0px;
+           font-family: Verdana,Arial,sans-serif;
+           font-size: 10px;
+           font-weight: bold;
+       }
+
+      
+
+           .Report-Data-Table thead {
+               display: block;
+
+           }
+
+       .Report-Data-Table tbody {
+           overflow: auto;
+            display: block;
+       }
+       
+           .Report-Data-Table TH {
+               color: black;
+               background-color: white;
+               border: solid;
+               border-color: white;
+               border-width: 1px;
+         
+           }
+
+           .Report-Data-Table TD {
+               color: black;
+               background-color: #f6f8f6;
+               border: solid;
+               border-color: lightgrey;
+               border-width: 1px;
+                
+           }
+
+       
+           
+         .Report-Table-Shaded
+       {
+          background-color:lightsteelblue;
+       }
+       .Report-Table-Alert-Shaded {
+           background-color:gold;
+       }
+
+
+       .arrow-right {
+           width: 0;
+           height: 0;
+           border-top: 5px solid transparent;
+           border-bottom: 5px solid transparent;
+           border-right: 0px hidden transparent;
+           padding-right: 0px;
+        
+       
+       }
+ 
+
+       
+
+       .condition_ON {
+ 
+           color: green;
+           font-size: 40px;
+           
+       }
+
+       .condition_AR {
+           color: yellow;
+           font-size: 40px;
+           padding: 0;
+       }
+       .condition_IT {
+           color: red;
+           font-size: 40px;
+           padding: 0;
+           vertical-align: central;
+           align-content: center;
+       }
+       
+.section-heading
+{
+    font-size: 11pt;
+    font-weight: bold;
+}
+.section-subheading
+{
+    font-size: 8pt;
+    font-weight: normal;
+    font-style:italic;
+}
+.section
+{
+    border: 1px;
+}
+.section-table
+{
+    width: 100%;
+}
+.section-table td
+{
+    vertical-align: top;
+}
+.section-table .label
+{
+    white-space: nowrap;
+    font-weight: bold;
+}
+.comments-table
+{
+    width: 100%;
+}
+.comments-table th
+{
+    white-space: nowrap;
+    padding: 0px 5px 0px 5px;
+}
+.comments-table td
+{
+    vertical-align: top;
+    padding: 0px 5px 0px 5px;
+}
+#container {
+  padding-left: 300px;   /* LC width */
+  padding-right: 150px;  /* RC width */
+}
+#container .column {
+  float: left;
+  position: relative;
+  vertical-align: top;
+}
+#center {
+  width: 100%;
+}
+#left {
+  width: 300px;        /* LC width */
+  margin-left: -100%;  
+  right: 300px;        /* LC width */
+}
+#right {
+  width: 150px;          /* RC width */
+  margin-right: -150px;  /* RC width */
+}
+#footer {
+  clear: both;
+}
+
+img.progress_ON
+{
+    width:10px;
+    height:10px;
+    background-color:white;
+}
+
+span.progress_ON:before
+{
+    content:"On Time";
+    color:black;
+   
+}
+
+       img.progress_LT {
+           width: 10px;
+           height: 10px;
+           background-color: red;
+       }
+
+       span.progress_LT:before {
+           content: "Late";
+           color: black;
+       }
+
+       img.progress_BH {
+           width: 10px;
+           height: 10px;
+           background-color: orange;
+       }
+
+       span.progress_BH:before {
+           content: "Behind";
+           color: black;
+       }
+
+
+       img.progress_RK {
+           width: 10px;
+           height: 10px;
+           background-color: orange;
+       }
+
+       span.progress_RK:before {
+           content: "Behind";
+           color: black;
+       }
+
+
+
+       .tooltip {
+           display: inline;
+           position: relative;
+       }
+
+           .tooltip:hover:after {
+               background: #333;
+               background: rgba(0,0,0,.8);
+               border-radius: 5px;
+               bottom: 26px;
+               color: #fff;
+               content: attr(title);
+               left: 20%;
+               padding: 5px 15px;
+               position: absolute;
+               z-index: 98;
+               width: 220px;
+           }
+
+           .tooltip:hover:before {
+               border: solid;
+               border-color: #333 transparent;
+               border-width: 6px 6px 0 6px;
+               bottom: 20px;
+               content: "";
+               left: 50%;
+               position: absolute;
+               z-index: 99;
+           }
+
+   </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+       
+
+<div id="_main">
+<div data-ng-controller="AtTaskJSONCtrl">
+    <div id="tabs">
+        <ul style="visibility:hidden">
+            <li><a href="#tabs-1">Status Report</a></li>
+            <li><a href="#tabs-6">AtTask JSON</a></li>
+        </ul>
+        <div id="tabs-1">
+            
+            
+                <DIV width="100%" class="Report-Table" style="display:table;width:100%" >
+        
+                    <div style="display:table-row" width="100%">
+                        <div   style="display:table-cell;width:30%;">
+                            <div class="logo">
+                                <img ng-src="{{logo}}" />
+                                 
+                            </div>
+                        </div>
+                        <div class="Report-Title" style="display: table-cell; width: 30%;"  >
+                            Project {{project.name}} <br />
+                            <font class="Report-Sub-Title">{{project.description}}</font>
+                        </div>
+                        <div     style="display: table-cell; width: 20%;">
+                            <table   class="Report-Data-Table" style="width:100%"  >
+                                <tr>
+                                    <td width="50%" height="20px">
+                                        Project Status:
+                                    </td>
+                                    <td width="50%">
+                                        <img src="" height="10px" width="10PX" style="color:#{(enumLookup('STATUS_PROJ',project.status).color}}">
+                                        {{enumLookup('STATUS_PROJ',project.status).label}}
+                                    </td>
+                                </tr>
+                                <!--TODO:  Use Friday of Current Week-->
+                                <tr>
+                                    <td> Week Ending:</td>
+                                    <td>  {{weekEnding }}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+
+                        <div  style="display: table-cell; width: 300px;text-align:center;vertical-align:central" >
+                            <span class="section-heading">Project Health:  <span class="condition_{{project.condition}}">●</span>&nbsp&nbsp&nbsp&nbsp</span>
+                        </div>
+                    </div>
+                    </div>
+            <p>
+	    <hr>
+	    <p>
+            <table width="100%" class="Report-Table">
+                <tr>
+                    <td width="40%" style="vertical-align:top;padding-left:0px">
+                        <span class="section-heading"><p>Project Information</span>
+			<span class="section-subheading">as of <span id="rundate">javascript poke of date goes here</span><hr></span>
+
+                         
+                        <table class="Project-Header-Table">
+
+                            <tr><td>Company:</td> <td> {{project.company.name}}</td></tr>
+                            <tr><td>Project Portfolio:</td> <td> {{project.portfolio.name}}</td></tr>
+                            <tr><td>Portfolio Manager:</td><td>{{project.portfolio.owner.name}}</td></tr>
+                            <tr><td>Business Sponsor:</td><td> {{project.sponsor.name}}</td></tr>
+                            <tr><td>Project Manager: </td><td>{{project.owner.name}}</td></tr>
+                            <tr><td>Project Description:</td><td>{{project.description}}</td></tr>
+                            <tr><td>Planned Start Date:</td><td>{{project.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td></tr>
+                            <tr><td>Planned Completion Date:</td><td>{{project.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td></tr>
+                            <tr><td>Reason for Project Health:</td><td>{{project.lastConditionNote.auditText}}</td></tr>
+
+
+                        </table>
+                    </td>
+                    <td style="vertical-align:top" width="60%">
+
+
+                        <span class="section-heading"><p>Timeline</span>
+			<span class="section-subheading">by Milestone Projected Completion Date, hover for details<hr></span>
+                        <div style="background-color:#d7e6d7; height=150px; text-align:center; max-width:600px">
+
+                            <a  class="tooltip" title="Project Start: {{project.actualStartDate| limitTo:19 | date:'mediumDate'}}"><span style="font-size: 30px; vertical-align: top; color:green" title="Planned Start: {{project.plannedStartDate| limitTo:19 | date:'mediumDate'}}">●</span></a>
+                            <a data-ng-repeat="mile in milestones | orderBy: 'projectedCompletionDate'"
+                                 href="{{atTaskHost}}/task/view?ID={{mile.ID}}" target="_blank" 
+                                    class="tooltip" title="{{mile.name}}" style="text-decoration:none">
+
+                                    <span ng-if="mile.milestoneID!=lastMilestoneID" style="font-size: 15px; vertical-align: middle;" ng-style="{'color':'#'+ enumLookup('STATUS_TASK',mile.status).color}" 
+                                          title="Projected Completion: {{mile.projectedCompletionDate | limitTo:19 | date:'mediumDate'}}">▆</span>
+
+                                    <!--  ► ▆ -->
+
+                                    <span ng-if="mile.milestoneID==lastMilestoneID" title="You are here. Projected Completion: {{mile.projectedCompletionDate | limitTo:19 | date:'mediumDate'}}" style="font-size:25px;vertical-align:middle; color:gold;padding-bottom:0px">★</span>
+
+
+                                </a>
+                                <a class="tooltip" title="Project Completion {{project.actualCompletionDate| limitTo:19 | date:'mediumDate'}}"><span style="font-size: 30px; vertical-align: top; color:red" title="Planned Completion: {{project.plannedCompletionDate| limitTo:19 | date:'mediumDate'}}">●</span></a>
+
+                                <br />
+                                <br />
+</div>
+
+			<span class="section-heading"><p><p>Milestones</span>
+			<span class="section-subheading">by Projected Completion Date, scrollable<hr></span>
+                        <table class="Report-Data-Table">
+                            <thead>
+                                <tr>
+                                    <th align="left" width="195px">Milestone</th>
+                                    <th align="left" width="78px">Status</th>
+                                    <th width="145px" align="left">Planned Completion</th>
+                                    <th align="left" width="145px">Projected Completion</th>
+                                </tr>
+                            </thead>
+                            <tbody style="height:100px;">
+                                <tr data-ng-repeat="mile in milestones | orderBy: 'projectedCompletionDate'">
+                                    <td style="width:200px">
+                                        <a style="text-decoration:none" href="{{atTaskHost}}/task/view?ID={{mile.ID}}" target="_blank">
+                                            {{mile.name}}</a>
+                                            <span ng-if="mile.milestoneID==lastMilestoneID" title="You are here." style="text-decoration:none;  font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+</td>
+                                    <td style="width:80px">
+                                        <img src="" width=10px height=10px ng-style="{'backgroundColor':'#' + enumLookup('STATUS_TASK',mile.status).color}" />
+                                        {{enumLookup('STATUS_TASK',mile.status).label}}
+                                    </td>
+                                    <td style="width:150px">{{mile.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</tdstyle>
+                                    <td style="width:150px">{{mile.projectedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </td>
+                    </tr>
+ </table>
+
+           
+<span class="section-heading"><p><p>Issues</span>
+<span class="section-subheading">recently Closed or not Closed, by Priority, scrollable<hr></span>
+
+<!--    var fields = ['name','priority','workRequired','plannedCompletionDate','status','assignedTo','description']; -->
+
+<table class="Report-Data-Table" >
+    <thead>
+    <tr>
+        <th style="min-width: 100px" align="left">Priority</th>
+        <th style="min-width: 200px" align="left">Issue</th>
+        <th style="min-width: 40px" align="left">Est. Hours</th>
+        <th style="width: 70px" align="left">Planned Completion</th>
+        <th style="width: 70px" align="left">Actual Completion</th>
+        <th style="min-width: 70px" align="left">Status</th>
+        <th style="min-width: 140px" align="left">Assigned To</th>
+        <th style="width: 100%" align="left">Description</th>
+    </tr>
+    </thead>
+    <tbody style="height:100px;">
+        <tr data-ng-repeat="issue in issues| orderBy: 'priority' : true">
+            <td style="min-width: 100px">
+                 
+                <img src="" width="10px" height="10px" ng-style="{'backgroundColor':'#'+ enumLookup('PRIORITY_OPTASK',issue.priority.toString()).color}" />
+
+                {{enumLookup('PRIORITY_OPTASK',issue.priority.toString()).label}}
+            </td>
+            <td style="min-width: 200px">
+                <a style="text-decoration:none" href="{{atTaskHost}}/issue/view?ID={{issue.ID}}" target="_blank">{{issue.name}}</a>
+
+            </td>
+            <td align="right" style="min-width:40px">{{issue.workRequired}}</td>
+            <td style="min-width: 70px">{{issue.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+            <td style="min-width: 70px">{{issue.actualCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+            <td style="min-width: 70px">
+                <img src="" style="width:10px;height:10px;" ng-style="{'backgroundColor':'#' + enumLookup('STATUS_OPTASK',issue.status).color }" />
+                {{enumLookup('STATUS_OPTASK',issue.status).label}}
+            </td>
+            <td style="min-width: 140px">  {{issue.assignedTo.name}}</td>
+            <td style="width: 100%">{{issue.description}}</td>
+        </tr>
+        </tbody>
+</table>
+            
+     
+                        <span class="section-heading"><p><p>Tasks</span>
+			<span class="section-subheading">recently Closed or not Closed, by Projected Completion Date, scrollable<hr></span>
+                        <!--          'company', 'name', 'description','handoffDate', 'plannedStartDate', 'plannedCompletionDate', 'projectedCompletionDate', 'progressStatus', 'plannedDuration',
+                'status', 'percentComplete', 'actualStartDate:*', 'actualCompletionDate'     -->
+
+
+                        <table class="Report-Data-Table">
+                            <thead>
+                                <tr>
+                                    <th align="left" width="197px">Name</th>
+                                    <th align="left" width="103px">Handoff Date</th>
+                                    <th align="left" width="103px">Planned Start</th>
+                                    <th align="left" width="103px">Planned Compl.</th>
+                                    <th align="left" width="103px">Projected Compl.</th>
+                                    <th align="left" width="79px">Prog. Status</th>
+
+                                    <th align="left" width="59px">Planned Duration</th>
+                                    <th align="left" width="79px">Task Status</th>
+                                    <th align="center" width="78px">% Compl.</th>
+
+                                    <th align="left" width="103px">Actual Start</th>
+                                    <th align="left" width="103px">Actual Compl.</th>
+                                </tr>
+                            </thead>
+                            <tbody style="height:150px;">
+                                <tr data-ng-repeat="task in tasks | orderBy: 'projectedCompletionDate'">
+                                    <td style="width:200px">
+
+                                         <a style="text-decoration:none" target="_blank" href="{{atTaskHost}}/task/view?ID={{task.ID}}">{{task.name}}</a>
+                                          
+                                        
+                                        <span ng-if="task.milestoneID==lastMilestoneID" title="You are here." style="font-size:15px;vertical-align:middle;color:gold;padding-bottom:0px">★</span>
+                                    </td>
+                                    <td style="width:105px">{{task.handoffDate | limitTo:19 | date:'mediumDate'}}</td>
+
+                                    <td style="width: 105px">{{task.plannedStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                    <td style="width: 105px">{{task.plannedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                    <td style="width: 105px">{{task.projectedCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+                                    <td style="width:80px">
+                                        <img src="" class="progress_{{task.progressStatus}}" />
+                                        <span class="progress_{{ task.progressStatus }}"></span>
+                                    </td>
+                                    <td style="width:60px">{{task.plannedDuration}}</td>
+                                    <td style="width:80px">
+                                        <img src="" style="width:10px;height:10px;" ng-style="{'backgroundColor':'#' + enumLookup('STATUS_TASK',task.status).color }" />
+                                        {{enumLookup('STATUS_TASK',task.status).label}}
+                                    </td>
+                                    <td style="width:80px" align="center">
+                                        <img src="" style="height:9px;background-color:green" ng-style="{'width':task.percentComplete + '%'}" />
+                                    {{task.percentComplete}}%</td>
+                                    <td style="width:105px">{{task.actualStartDate | limitTo:19 | date:'mediumDate'}}</td>
+                                    <td style="width:105px">{{task.actualCompletionDate | limitTo:19 | date:'mediumDate'}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                     
+            <div style="text-align:right"><br /> <a style="font-size:10px" href="http://www.atappstore.com" target="_new"><img src="https://www.atappstore.com/Images/BroughtToYouByAtAppStore.png"></a></div>
+           
+        </div>
+       
+        <div id="tabs-6">
+            <pre>{{ logoJson() }}</pre>
+            <br />
+            <br />
+            <br />
+            <pre>{{ enumJson() }}</pre>
+            <br />
+            <br />
+            <br />
+            <pre>{{ projectJson() }}</pre>
+            <br />
+            <br />
+            <br />
+            <pre>{{ issuesJson() }}</pre>
+            <br />
+            <br />
+            <br />
+            <pre>{{ milestonesJson() }}</pre>
+            <br />
+            <br />
+            <br />
+            <pre>{{ tasksJson() }}</pre>
+
+            
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div id="_error" style="display: none;">
+<span style="">Oops, we seem to have encountered an error.</span><br />
+<br />
+</div>
+
+    
+    </div>
+    </form>
+
+
+    <script type="text/javascript">
+    	var d = new Date();
+	document.getElementById("rundate").innerHTML = d.toLocaleString();
+    </script>
+
+
+    <script type="text/javascript">
+        //Set Default values for statuses
+        var DEFAULT_PRIORITY_OPTASK = [{
+            "color": "3D8FEA",
+            "equatesWith": null,
+            "label": "None",
+            "objCode": "CSTEM",
+            "value": "0",
+            "description": null,
+            "enumClass": "PRIORITY_OPTASK"
+        },
+      {
+          "color": "AAEA3A",
+          "equatesWith": null,
+          "label": "Low",
+          "objCode": "CSTEM",
+          "value": "1",
+          "description": null,
+          "enumClass": "PRIORITY_OPTASK"
+      },
+      {
+          "color": "E4EA3A",
+          "equatesWith": null,
+          "label": "Normal",
+          "objCode": "CSTEM",
+          "value": "2",
+          "description": null,
+          "enumClass": "PRIORITY_OPTASK"
+      },
+      {
+          "color": "FFC000",
+          "equatesWith": null,
+          "label": "High",
+          "objCode": "CSTEM",
+          "value": "3",
+          "description": null,
+          "enumClass": "PRIORITY_OPTASK"
+      },
+      {
+          "color": "E00000",
+          "equatesWith": null,
+          "label": "Urgent",
+          "objCode": "CSTEM",
+          "value": "4",
+          "description": null,
+          "enumClass": "PRIORITY_OPTASK"
+      }];
+
+        var DEFAULT_PRIORITY_PROJ = [{
+            "color": "3D8FEA",
+            "equatesWith": null,
+            "label": "None",
+            "objCode": "CSTEM",
+            "value": "0",
+            "description": null,
+            "enumClass": "PRIORITY_PROJ"
+        },
+            {
+                "color": "AAEA3A",
+                "equatesWith": null,
+                "label": "Low",
+                "objCode": "CSTEM",
+                "value": "1",
+                "description": null,
+                "enumClass": "PRIORITY_PROJ"
+            },
+            {
+                "color": "E4EA3A",
+                "equatesWith": null,
+                "label": "Normal",
+                "objCode": "CSTEM",
+                "value": "2",
+                "description": null,
+                "enumClass": "PRIORITY_PROJ"
+            },
+            {
+                "color": "FFC000",
+                "equatesWith": null,
+                "label": "High",
+                "objCode": "CSTEM",
+                "value": "3",
+                "description": null,
+                "enumClass": "PRIORITY_PROJ"
+            },
+            {
+                "color": "E00000",
+                "equatesWith": null,
+                "label": "Urgent",
+                "objCode": "CSTEM",
+                "value": "4",
+                "description": null,
+                "enumClass": "PRIORITY_PROJ"
+            }];
+
+        var DEFAULT_STATUS_OPTASK = [{
+            "color": "FF0000",
+            "equatesWith": "ONH",
+            "label": "Awaiting Feedback",
+            "objCode": "CSTEM",
+            "value": "AWF",
+            "description": null,
+            "enumClass": "STATUS_OPTASK"
+        },
+            {
+                "color": "B4B4B4",
+                "equatesWith": "CLS",
+                "label": "Closed",
+                "objCode": "CSTEM",
+                "value": "CLS",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "00FF00",
+                "equatesWith": "INP",
+                "label": "In Progress",
+                "objCode": "CSTEM",
+                "value": "INP",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "FFFFFF",
+                "equatesWith": "NEW",
+                "label": "New",
+                "objCode": "CSTEM",
+                "value": "NEW",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "0000FF",
+                "equatesWith": "ONH",
+                "label": "On Hold",
+                "objCode": "CSTEM",
+                "value": "ONH",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "007100",
+                "equatesWith": "ROP",
+                "label": "Reopened",
+                "objCode": "CSTEM",
+                "value": "ROP",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "007100",
+                "equatesWith": "CND",
+                "label": "Cannot Duplicate",
+                "objCode": "CSTEM",
+                "value": "CND",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "007100",
+                "equatesWith": "WTR",
+                "label": "Won't Resolve",
+                "objCode": "CSTEM",
+                "value": "WTR",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "007100",
+                "equatesWith": "RLV",
+                "label": "Resolved",
+                "objCode": "CSTEM",
+                "value": "RLV",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            },
+            {
+                "color": "007100",
+                "equatesWith": "VCP",
+                "label": "Verified Complete",
+                "objCode": "CSTEM",
+                "value": "VCP",
+                "description": null,
+                "enumClass": "STATUS_OPTASK"
+            }];
+
+        var DEFAULT_STATUS_PROJ = [{
+            "color": "000000",
+            "equatesWith": "APR",
+            "label": "Approved",
+            "objCode": "CSTEM",
+            "value": "APR",
+            "description": null,
+            "enumClass": "STATUS_PROJ"
+        },
+            {
+                "color": "007100",
+                "equatesWith": "CPL",
+                "label": "Complete",
+                "objCode": "CSTEM",
+                "value": "CPL",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "00FF00",
+                "equatesWith": "CUR",
+                "label": "Current",
+                "objCode": "CSTEM",
+                "value": "CUR",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "000000",
+                "equatesWith": "DED",
+                "label": "Dead",
+                "objCode": "CSTEM",
+                "value": "DED",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "000000",
+                "equatesWith": "IDA",
+                "label": "Idea",
+                "objCode": "CSTEM",
+                "value": "IDA",
+                "description": "Not Using",
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "000000",
+                "equatesWith": "ONH",
+                "label": "On Hold ",
+                "objCode": "CSTEM",
+                "value": "ONH",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "FFFFFF",
+                "equatesWith": "PLN",
+                "label": "Planning",
+                "objCode": "CSTEM",
+                "value": "PLN",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "FF0000",
+                "equatesWith": "REJ",
+                "label": "Rejected",
+                "objCode": "CSTEM",
+                "value": "REJ",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            },
+            {
+                "color": "000000",
+                "equatesWith": "REQ",
+                "label": "Requested",
+                "objCode": "CSTEM",
+                "value": "REQ",
+                "description": null,
+                "enumClass": "STATUS_PROJ"
+            }, ];
+
+        var DEFAULT_STATUS_TASK = [{
+            "color": "B4B4B4",
+            "equatesWith": "CPL",
+            "label": "Complete",
+            "objCode": "CSTEM",
+            "value": "CPL",
+            "description": null,
+            "enumClass": "STATUS_TASK"
+        },
+            {
+                "color": "0000FF",
+                "equatesWith": "ONH",
+                "label": "On Hold",
+                "objCode": "CSTEM",
+                "value": "ONH",
+                "description": null,
+                "enumClass": "STATUS_TASK"
+            },
+            {
+                "color": "39FF39",
+                "equatesWith": "INP",
+                "label": "In Progress",
+                "objCode": "CSTEM",
+                "value": "INP",
+                "description": null,
+                "enumClass": "STATUS_TASK"
+            },
+            {
+                "color": "FFFFFF",
+                "equatesWith": "NEW",
+                "label": "New",
+                "objCode": "CSTEM",
+                "value": "NEW",
+                "description": null,
+                "enumClass": "STATUS_TASK"
+            }];
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+        <script type="text/javascript">
+
+            var ATTASK_INSTANCE = '';
+            if (document.referrer != "") {
+                
+                ATTASK_INSTANCE = document.referrer.substring(8, document.referrer.indexOf(".com") + 4);
+            }
+            else {
+                ATTASK_INSTANCE = 'atappstore.attask-ondemand.com';
+            }
+
+
+           
+
+
+        $(function () {
+            $("#tabs").tabs();
+        });
+
+
+        // get value from querystring
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+
+
+
+        var app = angular.module('app', []);
+
+        //
+        // Angular.js, for easy layouts from JSON
+        // See tutorial at:
+        //    https://angularjs.org/
+        //
+        app.controller('AtTaskJSONCtrl', function ($scope, $http, $sce, $filter) {
+
+            $scope.atTaskSessionID = getParameterByName("s");
+            $scope.atTaskProjectID = getParameterByName("o");
+            $scope.atTaskCustomerID = getParameterByName("h");
+            $scope.atTaskHost = 'https://' + ATTASK_INSTANCE;
+
+
+            var nextFri = new Date(); //Date(2014,6,6,1,1,1,1);
+            nextFri.setDate(nextFri.getDate() - (nextFri.getDay() - 5));
+            $scope.weekEnding = nextFri.toDateString();
+
+
+
+            //&enumClass=STATUS&enumClass_Mod=contains
+            $scope.enum = {};
+            var enumsURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/cstem/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=color,label,value,description,enumClass&jsonp=JSON_CALLBACK';
+            $http.jsonp(enumsURL)
+                .success(function (data, status) {
+                    $scope.enum = data.data;
+
+
+                    if ($filter('filter')($scope.enum, { enumClass: 'PRIORITY_OPTASK' }).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_PRIORITY_OPTASK);
+                    if ($filter('filter')($scope.enum, { enumClass: 'PRIORITY_PROJ' }).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_PRIORITY_PROJ);
+                    if ($filter('filter')($scope.enum, { enumClass: 'STATUS_OPTASK' }).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_OPTASK);
+                    if ($filter('filter')($scope.enum, { enumClass: 'STATUS_PROJ' }).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_PROJ);
+                    if ($filter('filter')($scope.enum, { enumClass: 'STATUS_TASK' }).length == '0') $scope.enum = $scope.enum.concat(DEFAULT_STATUS_TASK);
+
+
+                }).error(function (data, status) {
+                    // Some error occurred
+                    var x = data;
+                    var y = status;
+                });
+
+
+
+
+            // set $scope.project
+            $scope.project = {};
+            var fields = [
+                'company', 'name', 'status', 'sponsor', 'condition', 'lastUpdateDate', 'plannedStartDate', 'plannedCompletionDate', 'actualStartDate', 'actualCompletionDate', 'milestonePathID',
+                'description', 'owner:name', 'lastConditionNote:*', 'portfolio:name',
+                'portfolio:owner:name'
+            ];
+
+
+
+            var projectsURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/proj/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields= ' + fields.join(',') + '&ID=' + $scope.atTaskProjectID + '&jsonp=JSON_CALLBACK';
+            $http.jsonp(projectsURL)
+                .success(function (data, status) {
+                    $scope.project = data.data[0];
+                }).error(function (data, status) {
+                    // Some error occurred
+                    var x = data;
+                    var y = status;
+                });
+
+
+
+
+            // set $scope.milestones
+            $scope.milestones = [];
+            var milestonesURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/task/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=name,status,plannedCompletionDate,projectedCompletionDate,milestoneID&milestoneID_Mod=notnull&projectID=' + $scope.atTaskProjectID + '&jsonp=JSON_CALLBACK';
+
+            $http.jsonp(milestonesURL)
+                .success(function (data, status) {
+                    $scope.milestones = data.data;
+                    $scope.lastMilestoneID = '';
+                    $scope.maxDate = new Date('Jan 01 9000');
+
+                    for (var i = 0; i < $scope.milestones.length; i++) {
+                        dvalue = new Date($scope.milestones[i].projectedCompletionDate.substr(0, 19));
+
+                        if (dvalue < $scope.maxDate && dvalue > new Date()) {
+                            $scope.lastMilestoneID = $scope.milestones[i].milestoneID;
+                            $scope.maxDate = dvalue;
+                        }
+
+                    }
+
+
+                }).error(function (data, status) {
+                    // Some error occurred
+                    var x = data;
+                    var y = status;
+                });
+
+
+
+            var dFrom = new Date();
+            dFrom.setDate(nextFri.getDate() - 7);
+            var dTo = new Date();
+            dTo.setDate(nextFri.getDate() + 7);
+
+            // set $scope.tasks
+            var fields = [
+                 'name', 'description', 'handoffDate', 'plannedStartDate', 'plannedCompletionDate', 'projectedCompletionDate', 'progressStatus', 'plannedDuration',
+                'status', 'percentComplete', 'actualStartDate:*', 'actualCompletionDate', 'milestoneID'
+            ];
+
+
+            var staticFilters = ['projectID=' + $scope.atTaskProjectID];
+
+            //TODO: Use status equatesWith instead of direct compare to status.
+
+            var orFilter =
+
+            //'&OR:1:plannedCompletionDate=' + dFrom.toISOString() + '&OR:1:plannedCompletionDate_Mod=between&OR:1:plannedCompletionDate_Range=' + dTo.toISOString() + '&OR:1:' + staticFilters.join('&OR:1:')
+            //       + '&OR:2:plannedStartDate=' + dFrom.toISOString() + '&OR:2:plannedStartDate_Mod=between&OR:2:plannedStartDate_Range=' + dTo.toISOString() + '&OR:2:' + staticFilters.join('&OR:2:')
+            //      + '&OR:3:actualCompletionDate=' + dFrom.toISOString() + '&OR:3:actualCompletionDate_Mod=between&OR:3:actualCompletionDate_Range=' + dTo.toISOString() + '&OR:3:' + staticFilters.join('&OR:3:')
+                          '&OR:1:projectedCompletionDate=' + dFrom.toISOString() + '&OR:1:projectedCompletionDate_Mod=between&OR:1:projectedCompletionDate_Range=' + dTo.toISOString() + '&OR:1:' + staticFilters.join('&OR:1:')
+                         + '&status=CPL' + '&status_Mod=ne' + '&' + staticFilters.join('&');
+
+            $scope.tasks = [];
+            $scope.tasksURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/task/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + fields.join(",") + orFilter + '&jsonp=JSON_CALLBACK';
+
+            $http.jsonp($scope.tasksURL)
+                .success(function (data, status) {
+                    $scope.tasks = data.data;
+                }).error(function (data, status) {
+                    // Some error occurred
+                    var x = data;
+                    var y = status;
+                });
+
+
+
+            $scope.logoProperties = [];
+
+            $scope.logoURL = 'https://' + ATTASK_INSTANCE + '/attask/api-internal/brnd/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=*&jsonp=JSON_CALLBACK';
+
+            $scope.logo = 'AtAppStoreNewLogoMedium.png';
+            $http.jsonp($scope.logoURL)
+                .success(function (data, status) {
+
+                    $scope.logoProperties = JSON.parse(data.data[0].details);
+                    if ($scope.logoProperties && $scope.logoProperties.loginLogo) {
+                        $scope.logo = 'https://' + ATTASK_INSTANCE + $scope.logoProperties.loginLogo.URL;
+                    }
+
+                }).error(function (data, status) {
+                    // Some error occurred
+                    $scope.error = 'Logo load failed ' + status;
+                    var y = status;
+                });
+
+
+
+            var fields = ['name', 'priority', 'workRequired', 'plannedCompletionDate', 'actualCompletionDate', 'status', 'assignedTo', 'description'];
+
+
+
+
+            var staticFilters = ['projectID=' + $scope.atTaskProjectID];
+
+            var orFilter = '&OR:1:plannedCompletionDate=' + dFrom.toISOString() + '&OR:1:plannedCompletionDate_Mod=between&OR:1:plannedCompletionDate_Range=' + dTo.toISOString() + '&OR:1:' + staticFilters.join('&OR:1:')
+                + '&OR:2:actualCompletionDate=' + dFrom.toISOString() + '&OR:2:actualCompletionDate_Mod=between&OR:2:actualCompletionDate_Range=' + dTo.toISOString() + '&OR:2:' + staticFilters.join('&OR:2:')
+                + '&status=CLS' + '&status_Mod=ne' + '&' + staticFilters.join('&');
+
+
+
+
+
+            // set $scope.issues
+            $scope.issues = [];
+            $scope.issuesURL = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/optask/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=' + fields.join(",") + orFilter + '&jsonp=JSON_CALLBACK';
+            $http.jsonp($scope.issuesURL)
+                .success(function (data, status) {
+                    $scope.issues = data.data;
+                }).error(function (data, status) {
+                    // Some error occurred
+                    var x = data;
+                    var y = status;
+                });
+
+
+            $scope.logoJson = function () {
+                var json = "Logo JSON is undefined";
+                if ($scope.logoProperties) {
+                    json = dojo.toJson($scope.logoProperties, true);
+                }
+                return $scope.logoURL + ' ' + $scope.logo + ' ' + json;
+            }
+
+            $scope.enumJson = function () {
+                var json = "Enum JSON is undefined";
+                if ($scope.enum) {
+                    json = dojo.toJson($scope.enum, true);
+                }
+                return enumsURL + ' ' + $filter('filter')($scope.enum, { enumClass: 'PRIORITY_OPTASK' }).length + ' ' + json;
+            }
+
+
+            $scope.projectJson = function () {
+                var json = 'Project JSON is undefined';
+                var testUrl = 'https://' + ATTASK_INSTANCE + '/attask/api/v4.0/proj/search?method=GET&sessionID=' + $scope.atTaskSessionID + '&fields=*&' + 'ID=' + $scope.atTaskProjectID;
+                if ($scope.project) {
+                    json = dojo.toJson($scope.project, true);
+                }
+                return testUrl + json;
+            }
+
+            $scope.issuesJson = function () {
+                var json = "Issues JSON is undefined";
+                if ($scope.issues) {
+                    json = dojo.toJson($scope.issues, true);
+                }
+                return $scope.issuesURL + ' ' + json;
+            }
+
+            $scope.milestonesJson = function () {
+                var json = "Milestones JSON is undefined";
+                if ($scope.milestones) {
+                    json = dojo.toJson($scope.milestones, true);
+                }
+                return new Date('Jan 01 1900') + ' ' + $scope.maxDate + ' ' + $scope.lastMilestoneID + json;
+            }
+
+
+            $scope.tasksJson = function () {
+                var json = "Tasks JSON is undefined";
+                if ($scope.tasks) {
+                    json = dojo.toJson($scope.tasks, true);
+                }
+                return $scope.tasksURL + '' + json;
+            }
+
+            $scope.parameterValue = function (name) {
+                if ($scope.project) {
+                    for (var key in $scope.project.parameterValues) {
+                        if (key == name) {
+                            return $scope.project.parameterValues[key];
+                        }
+                    }
+                }
+                return null;
+            };
+
+
+            $scope.enumLookup = function (enumType, lookupVal) {
+                return $filter('filter')($scope.enum, { value: lookupVal, enumClass: enumType }, true)[0];
+            }
+
+
+            $scope.render_as_html = function (html_code) {
+                return $sce.trustAsHtml(html_code);
+            };
+
+            $scope.render_as_date = function (val) {
+                if (val == null) { return ''; }
+                if (val.length < 10) { return val; }
+                return $sce.trustAsHtml(val.substr(0, 10));
+            };
+        });
+    </script>
+
+</body>
+</html>
